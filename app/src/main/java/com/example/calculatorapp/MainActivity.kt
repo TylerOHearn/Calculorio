@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import com.example.calculatorapp.utils.OperatorUtils
 
 
 class MainActivity : AppCompatActivity() {
@@ -74,6 +74,10 @@ class MainActivity : AppCompatActivity() {
             tvInput?.append(".")
             lastNumeric = false
             lastDot = true
+        } else if (!lastNumeric && !lastDot) {
+            tvInput?.append("0.")
+            lastNumeric = false
+            lastDot = true
         }
     }
 
@@ -81,7 +85,7 @@ class MainActivity : AppCompatActivity() {
     fun onOperator(view: View) {
         tvInput?.text?.let {
 
-            if (lastNumeric && !isOperatorAdded(it.toString())) {
+            if (lastNumeric && !OperatorUtils.isOperatorAdded(it.toString())) {
                 tvInput?.append((view as Button).text)
                 lastNumeric = false
                 lastDot = false
@@ -103,31 +107,31 @@ class MainActivity : AppCompatActivity() {
                     val splitValue = tvValue.split("-")
 
                     var one = splitValue[0]
-                    var two = splitValue[1]
+                    val two = splitValue[1]
 
                     if(prefix.isNotEmpty()){
                         one = prefix + one
                         }
 
-                    tvInput?.text = removeZeroAfterDecimal((one.toDouble() - two.toDouble()))
+                    tvInput?.text = OperatorUtils.removeZeroAfterDecimal((one.toDouble() - two.toDouble()))
                 }
                 else if(tvValue.contains("+")){
                     val splitValue = tvValue.split("+")
 
                     var one = splitValue[0]
-                    var two = splitValue[1]
+                    val two = splitValue[1]
 
                     if(prefix.isNotEmpty()){
                         one = prefix + one
                     }
 
-                    tvInput?.text = removeZeroAfterDecimal((one.toDouble() + two.toDouble()))
+                    tvInput?.text = OperatorUtils.removeZeroAfterDecimal((one.toDouble() + two.toDouble()))
                 }
                 else if(tvValue.contains("/")){
                     val splitValue = tvValue.split("/")
 
                     var one = splitValue[0]
-                    var two = splitValue[1]
+                    val two = splitValue[1]
 
                     if(prefix.isNotEmpty()){
                         one = prefix + one
@@ -138,19 +142,19 @@ class MainActivity : AppCompatActivity() {
                         throw java.lang.ArithmeticException()
                     }
 
-                    tvInput?.text = removeZeroAfterDecimal(test)
+                    tvInput?.text = OperatorUtils.removeZeroAfterDecimal(test)
                 }
                 else if(tvValue.contains("*")){
                     val splitValue = tvValue.split("*")
 
                     var one = splitValue[0]
-                    var two = splitValue[1]
+                    val two = splitValue[1]
 
                     if(prefix.isNotEmpty()){
                         one = prefix + one
                     }
 
-                    tvInput?.text = removeZeroAfterDecimal((one.toDouble() * two.toDouble()))
+                    tvInput?.text = OperatorUtils.removeZeroAfterDecimal((one.toDouble() * two.toDouble()))
                 }
 
 
@@ -159,6 +163,8 @@ class MainActivity : AppCompatActivity() {
                 toggleButtons(false)
                 tvInput?.text = getString(R.string.Divide_by_zero_error_message)
             }
+
+            lastDot = OperatorUtils.decimalCheck(tvInput?.text.toString())
         }
     }
 
@@ -179,21 +185,6 @@ class MainActivity : AppCompatActivity() {
         divide?.isEnabled = toggle
         decimal?.isEnabled = toggle
         equal?.isEnabled = toggle
-    }
-
-    private fun removeZeroAfterDecimal(result: Double): String {
-        return String.format("%.2f", result)
-    }
-
-    private fun isOperatorAdded(value: String): Boolean {
-        return if (value.startsWith("-")) {
-            false
-        } else {
-            (value.contains("/")
-                    || value.contains("*")
-                    || value.contains("-")
-                    || value.contains("+"))
-        }
     }
 
 }
