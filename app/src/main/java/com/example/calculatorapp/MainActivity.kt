@@ -11,6 +11,23 @@ import android.widget.TextView
 class MainActivity : AppCompatActivity() {
 
     private var tvInput: TextView? = null
+    private var numOne: Button? = null
+    private var numTwo: Button? = null
+    private var numThree: Button? = null
+    private var numFour: Button? = null
+    private var numFive: Button? = null
+    private var numSix: Button? = null
+    private var numSeven: Button? = null
+    private var numEight: Button? = null
+    private var numNine: Button? = null
+    private var numZero: Button? = null
+    private var add: Button? = null
+    private var subtract: Button? = null
+    private var multiply: Button? = null
+    private var divide: Button? = null
+    private var decimal: Button? = null
+    private var equal: Button? = null
+
     var lastNumeric : Boolean = false
     var lastDot : Boolean = false
 
@@ -20,6 +37,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         tvInput = findViewById(R.id.tvInput)
+        numOne = findViewById(R.id.buttonOne)
+        numTwo = findViewById(R.id.buttonTwo)
+        numThree = findViewById(R.id.buttonThree)
+        numFour = findViewById(R.id.buttonFour)
+        numFive = findViewById(R.id.buttonFive)
+        numSix = findViewById(R.id.buttonSix)
+        numSeven = findViewById(R.id.buttonSeven)
+        numEight = findViewById(R.id.buttonEight)
+        numNine = findViewById(R.id.buttonNine)
+        numZero = findViewById(R.id.buttonZero)
+        add = findViewById(R.id.buttonAdd)
+        subtract = findViewById(R.id.buttonSubtract)
+        multiply = findViewById(R.id.buttonMultiply)
+        divide = findViewById(R.id.buttonDivide)
+        decimal = findViewById(R.id.buttonDecimal)
+        equal = findViewById(R.id.buttonEquals)
     }
 
     fun onDigit(view: View){
@@ -32,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         tvInput?.text = ""
         lastNumeric = false
         lastDot = false
+        toggleButtons(true)
     }
 
     fun onDecimal(view: View){
@@ -98,7 +132,12 @@ class MainActivity : AppCompatActivity() {
                         one = prefix + one
                     }
 
-                    tvInput?.text = removeZeroAfterDecimal((one.toDouble() / two.toDouble()).toString())
+                    val test = (one.toDouble() / two.toDouble())
+                    if (test.equals(Double.POSITIVE_INFINITY)) {
+                        throw java.lang.ArithmeticException()
+                    }
+
+                    tvInput?.text = removeZeroAfterDecimal(test.toString())
                 }
                 else if(tvValue.contains("*")){
                     val splitValue = tvValue.split("*")
@@ -116,16 +155,29 @@ class MainActivity : AppCompatActivity() {
 
             }catch (e: ArithmeticException){
                 e.printStackTrace()
-                disableOnError(view)
+                toggleButtons(false)
+                tvInput?.text = "NO. >:["
             }
         }
     }
 
-    fun disableOnError(view: View) {
-        val numOne = view.findViewById<Button>(R.id.buttonOne)
-        numOne.isEnabled = false
-        val numTwo = view.findViewById<Button>(R.id.buttonTwo)
-        numTwo.isEnabled = false
+    fun toggleButtons(toggle: Boolean) {
+        numOne?.isEnabled = toggle
+        numTwo?.isEnabled = toggle
+        numThree?.isEnabled = toggle
+        numFour?.isEnabled = toggle
+        numFive?.isEnabled = toggle
+        numSix?.isEnabled = toggle
+        numSeven?.isEnabled = toggle
+        numEight?.isEnabled = toggle
+        numNine?.isEnabled = toggle
+        numZero?.isEnabled = toggle
+        add?.isEnabled = toggle
+        subtract?.isEnabled = toggle
+        multiply?.isEnabled = toggle
+        divide?.isEnabled = toggle
+        decimal?.isEnabled = toggle
+        equal?.isEnabled = toggle
     }
 
     private fun removeZeroAfterDecimal(result: String): String {
