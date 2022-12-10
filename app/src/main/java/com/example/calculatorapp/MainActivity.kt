@@ -25,12 +25,13 @@ class MainActivity : AppCompatActivity() {
     fun onDigit(view: View){
         tvInput?.append((view as Button).text)
         lastNumeric = true
-        lastDot = false
 
     }
 
     fun onClear(view: View){
         tvInput?.text = ""
+        lastNumeric = false
+        lastDot = false
     }
 
     fun onDecimal(view: View){
