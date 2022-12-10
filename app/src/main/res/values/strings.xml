@@ -18,4 +18,5 @@
     <string name="calculator_button_subtract">-</string>
     <string name="calculator_button_clear">CLR</string>
     <string name="calculator_button_equals">=</string>
+    <string name="Divide_by_zero_error_message">No. >:[</string>
 </resources>

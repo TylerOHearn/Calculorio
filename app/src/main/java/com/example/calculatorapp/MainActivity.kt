@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 
 
 class MainActivity : AppCompatActivity() {
@@ -108,7 +109,7 @@ class MainActivity : AppCompatActivity() {
                         one = prefix + one
                         }
 
-                    tvInput?.text = removeZeroAfterDecimal((one.toDouble() - two.toDouble()).toString())
+                    tvInput?.text = removeZeroAfterDecimal((one.toDouble() - two.toDouble()))
                 }
                 else if(tvValue.contains("+")){
                     val splitValue = tvValue.split("+")
@@ -120,7 +121,7 @@ class MainActivity : AppCompatActivity() {
                         one = prefix + one
                     }
 
-                    tvInput?.text = removeZeroAfterDecimal((one.toDouble() + two.toDouble()).toString())
+                    tvInput?.text = removeZeroAfterDecimal((one.toDouble() + two.toDouble()))
                 }
                 else if(tvValue.contains("/")){
                     val splitValue = tvValue.split("/")
@@ -137,7 +138,7 @@ class MainActivity : AppCompatActivity() {
                         throw java.lang.ArithmeticException()
                     }
 
-                    tvInput?.text = removeZeroAfterDecimal(test.toString())
+                    tvInput?.text = removeZeroAfterDecimal(test)
                 }
                 else if(tvValue.contains("*")){
                     val splitValue = tvValue.split("*")
@@ -149,14 +150,14 @@ class MainActivity : AppCompatActivity() {
                         one = prefix + one
                     }
 
-                    tvInput?.text = removeZeroAfterDecimal((one.toDouble() * two.toDouble()).toString())
+                    tvInput?.text = removeZeroAfterDecimal((one.toDouble() * two.toDouble()))
                 }
 
 
             }catch (e: ArithmeticException){
                 e.printStackTrace()
                 toggleButtons(false)
-                tvInput?.text = "NO. >:["
+                tvInput?.text = getString(R.string.Divide_by_zero_error_message)
             }
         }
     }
@@ -180,15 +181,8 @@ class MainActivity : AppCompatActivity() {
         equal?.isEnabled = toggle
     }
 
-    private fun removeZeroAfterDecimal(result: String): String {
-
-        var value = result
-
-        if (result.contains(".0")) {
-            value = result.substring(0, result.length - 2)
-        }
-
-        return value
+    private fun removeZeroAfterDecimal(result: Double): String {
+        return String.format("%.2f", result)
     }
 
     private fun isOperatorAdded(value: String): Boolean {
