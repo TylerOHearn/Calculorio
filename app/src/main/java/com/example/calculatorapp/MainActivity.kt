@@ -1,12 +1,13 @@
 package com.example.calculatorapp
 
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.example.calculatorapp.utils.OperatorUtils
+import timber.log.Timber
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,8 +30,8 @@ class MainActivity : AppCompatActivity() {
     private var decimal: Button? = null
     private var equal: Button? = null
 
-    var lastNumeric : Boolean = false
-    var lastDot : Boolean = false
+    var lastNumeric: Boolean = false
+    var lastDot: Boolean = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,21 +57,21 @@ class MainActivity : AppCompatActivity() {
         equal = findViewById(R.id.buttonEquals)
     }
 
-    fun onDigit(view: View){
+    fun onDigit(view: View) {
         tvInput?.append((view as Button).text)
         lastNumeric = true
 
     }
 
-    fun onClear(view: View){
+    fun onClear(view: View) {
         tvInput?.text = ""
         lastNumeric = false
         lastDot = false
         toggleButtons(true)
     }
 
-    fun onDecimal(view: View){
-        if(lastNumeric && !lastDot){
+    fun onDecimal(view: View) {
+        if (lastNumeric && !lastDot) {
             tvInput?.append(".")
             lastNumeric = false
             lastDot = true
@@ -93,47 +94,53 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun onEqual(view: View){
-        if(lastNumeric){
+    fun onEqual(view: View) {
+        if (lastNumeric) {
             var tvValue = tvInput?.text.toString()
             var prefix = ""
 
             try {
-                if(tvValue.startsWith("-")){
+                if (tvValue.startsWith("-")) {
                     prefix = "-"
                     tvValue = tvValue.substring(1)
                 }
-                if(tvValue.contains("-")){
+                if (tvValue.contains("-")) {
+                    Timber.i("User is doing subtraction")
+
                     val splitValue = tvValue.split("-")
 
                     var one = splitValue[0]
                     val two = splitValue[1]
 
-                    if(prefix.isNotEmpty()){
+                    if (prefix.isNotEmpty()) {
                         one = prefix + one
-                        }
+                    }
 
-                    tvInput?.text = OperatorUtils.removeZeroAfterDecimal((one.toDouble() - two.toDouble()))
-                }
-                else if(tvValue.contains("+")){
+                    tvInput?.text =
+                        OperatorUtils.removeZeroAfterDecimal((one.toDouble() - two.toDouble()))
+                } else if (tvValue.contains("+")) {
+                    Timber.i("User is doing addition")
+
                     val splitValue = tvValue.split("+")
 
                     var one = splitValue[0]
                     val two = splitValue[1]
 
-                    if(prefix.isNotEmpty()){
+                    if (prefix.isNotEmpty()) {
                         one = prefix + one
                     }
 
-                    tvInput?.text = OperatorUtils.removeZeroAfterDecimal((one.toDouble() + two.toDouble()))
-                }
-                else if(tvValue.contains("/")){
+                    tvInput?.text =
+                        OperatorUtils.removeZeroAfterDecimal((one.toDouble() + two.toDouble()))
+                } else if (tvValue.contains("/")) {
+                    Timber.i("User is doing division")
+
                     val splitValue = tvValue.split("/")
 
                     var one = splitValue[0]
                     val two = splitValue[1]
 
-                    if(prefix.isNotEmpty()){
+                    if (prefix.isNotEmpty()) {
                         one = prefix + one
                     }
 
@@ -143,25 +150,28 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     tvInput?.text = OperatorUtils.removeZeroAfterDecimal(test)
-                }
-                else if(tvValue.contains("*")){
+                } else if (tvValue.contains("*")) {
+                    Timber.i("User is doing multiplication")
+
                     val splitValue = tvValue.split("*")
 
                     var one = splitValue[0]
                     val two = splitValue[1]
 
-                    if(prefix.isNotEmpty()){
+                    if (prefix.isNotEmpty()) {
                         one = prefix + one
                     }
 
-                    tvInput?.text = OperatorUtils.removeZeroAfterDecimal((one.toDouble() * two.toDouble()))
+                    tvInput?.text =
+                        OperatorUtils.removeZeroAfterDecimal((one.toDouble() * two.toDouble()))
                 }
 
 
-            }catch (e: ArithmeticException){
+            } catch (e: ArithmeticException) {
                 e.printStackTrace()
                 toggleButtons(false)
                 tvInput?.text = getString(R.string.Divide_by_zero_error_message)
+                Timber.e(e)
             }
 
             lastDot = OperatorUtils.decimalCheck(tvInput?.text.toString())
