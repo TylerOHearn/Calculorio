@@ -6,6 +6,8 @@ A simple non-scientific calculator app showcasing proof of concept for operation
 
 Written in [Kotlin](https://kotlinlang.org/) using [MVC](https://medium.com/upday-devs/android-architecture-patterns-part-1-model-view-controller-3baecef5f2b6) architecture and uses the [Timber](https://github.com/JakeWharton/timber) logging library, the app has barebones functionality but the codebase is organized and clean.
 
+Fun Easter egg included for divide by 0 functionality, check out the last screenshot!
+
 ![Screenshot_Home](Screenshots/Screenshot_Home_google-pixel4-justblack-portrait.png)
 ![Screenshot_Input](Screenshots/Screenshot_Input_google-pixel4-justblack-portrait.png)
 ![Screenshot_Input_Addition](Screenshots/)
